@@ -1,38 +1,41 @@
 "use client";
 
-export type SabreOfficeInjectedConfig = {
+export type WgwPluginInjectedConfig = {
   base_uri: string;
   auth_realm: string;
   timezone: string;
-  office_path: string;
+  plugin_id: string;
+  plugin_route: string;
   username: string;
-  save_transport?: "webdav" | "api" | "webdav+api";
-  save_api_path?: string;
+  saveTransport?: "webdav" | "drive" | "webdav+drive";
+  sessionApiPath?: string;
+  editorPaths?: string[];
 };
 
-export function readSabreOfficeConfig(): SabreOfficeInjectedConfig | null {
+export function readSabreOfficeConfig(): WgwPluginInjectedConfig | null {
   if (typeof window === "undefined") {
     return null;
   }
-  const w = window as unknown as { __SABRE_OFFICE_CONFIG__?: SabreOfficeInjectedConfig };
-  const c = w.__SABRE_OFFICE_CONFIG__;
+  const w = window as unknown as { __WGW_PLUGIN_CONFIG__?: WgwPluginInjectedConfig };
+  const c = w.__WGW_PLUGIN_CONFIG__;
   if (!c || typeof c.base_uri !== "string" || typeof c.username !== "string") {
     return null;
   }
+  const saveTransport =
+    c.saveTransport === "webdav" || c.saveTransport === "drive" || c.saveTransport === "webdav+drive"
+      ? c.saveTransport
+      : "webdav+drive";
+
   return {
     base_uri: c.base_uri,
     auth_realm: typeof c.auth_realm === "string" ? c.auth_realm : "SabreDAV",
     timezone: typeof c.timezone === "string" ? c.timezone : "UTC",
-    office_path: typeof c.office_path === "string" ? c.office_path : "/office/",
+    plugin_id: typeof c.plugin_id === "string" ? c.plugin_id : "",
+    plugin_route: typeof c.plugin_route === "string" ? c.plugin_route : "/office/",
     username: c.username,
-    save_transport:
-      c.save_transport === "webdav" || c.save_transport === "api" || c.save_transport === "webdav+api"
-        ? c.save_transport
-        : "webdav+api",
-    save_api_path:
-      typeof c.save_api_path === "string" && c.save_api_path.trim() !== ""
-        ? c.save_api_path
-        : "/api/v1/office/documents",
+    saveTransport,
+    sessionApiPath: typeof c.sessionApiPath === "string" ? c.sessionApiPath : undefined,
+    editorPaths: Array.isArray(c.editorPaths) ? c.editorPaths : undefined,
   };
 }
 
