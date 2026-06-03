@@ -1,0 +1,10 @@
+{
+  "name": "@wgw/plugins",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "build": "pnpm --filter @wgw/plugin-onlyoffice build",
+    "release:onlyoffice": "node tools/build-onlyoffice-release.mjs"
+  }
+}

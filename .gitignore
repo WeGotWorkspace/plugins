@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.pnpm-store/
+
+onlyoffice/.next/
+onlyoffice/out/
+onlyoffice/node_modules/
+
+.DS_Store
+.env
+.env.*
