@@ -1,6 +1,6 @@
 # WeGotWorkspace plugins
 
-Official plugin packages for [WeGotWorkspace](https://github.com/WeGotWorkspace/wegotworkspace).
+Official **first-party** plugin packages for [WeGotWorkspace](https://github.com/WeGotWorkspace/wegotworkspace). Third-party plugins are also supported when they follow the [plugin standards](https://github.com/WeGotWorkspace/wegotworkspace/blob/main/docs/plugins.md).
 
 Each top-level folder is one installable plugin. Release artifacts are published as GitHub Releases (`wgw-plugin-<id>-<version>.zip`).
 
@@ -22,10 +22,21 @@ Manual install: unpack so `plugin.json` and `assets/` land under `wgw-plugins/<p
 pnpm install
 pnpm --filter @wgw/plugin-onlyoffice dev
 pnpm --filter @wgw/plugin-onlyoffice build
-pnpm run release:onlyoffice
+pnpm release:onlyoffice
 ```
 
 See [`onlyoffice/README.md`](onlyoffice/README.md) for editor-specific notes.
+
+## Release
+
+Tags use `<plugin-id>-v<semver>` (example: `onlyoffice-v0.2.0`). CI builds and uploads signed ZIPs to GitHub Releases.
+
+```bash
+cp .env.example .env
+pnpm release:onlyoffice:publish patch
+```
+
+Full flow: [`docs/release.md`](docs/release.md).
 
 ## License
 

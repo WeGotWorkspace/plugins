@@ -5,6 +5,9 @@
   "packageManager": "pnpm@9.15.4",
   "scripts": {
     "build": "pnpm --filter @wgw/plugin-onlyoffice build",
-    "release:onlyoffice": "node tools/build-onlyoffice-release.mjs"
+    "release:onlyoffice": "tools/with-root-env.sh -- node tools/build-plugin-release.mjs onlyoffice",
+    "release:onlyoffice:publish": "tools/with-root-env.sh -- bash tools/release-plugin.sh onlyoffice publish",
+    "ci:build": "pnpm run build",
+    "ci:package": "WGW_PLUGIN_SKIP_BUILD=1 node tools/build-plugin-release.mjs onlyoffice"
   }
 }

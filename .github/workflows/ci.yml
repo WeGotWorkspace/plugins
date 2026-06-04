@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    if: >-
+      github.event_name != 'push' ||
+      !startsWith(github.event.head_commit.message, 'chore(release):')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install workspace
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint ONLYOFFICE plugin
+        run: pnpm --filter @wgw/plugin-onlyoffice lint
+
+      - name: Build plugins
+        run: pnpm run build
+
+      - name: Verify release packaging (unsigned)
+        run: WGW_PLUGIN_SKIP_BUILD=1 node tools/build-plugin-release.mjs onlyoffice
+
+      - name: Assert ZIP layout
+        run: |
+          unzip -l dist/releases/wgw-plugin-onlyoffice-*.zip | grep -F 'onlyoffice/plugin.json'
+          unzip -l dist/releases/wgw-plugin-onlyoffice-*.zip | grep -F 'onlyoffice/assets/index.html'
