@@ -34,8 +34,10 @@
       }
     ]
   },
-  "office": {
-    "saveTransport": "webdav+api",
-    "saveApiPath": "/api/v1/office/documents"
+  "integration": {
+    "configGlobal": "__WGW_PLUGIN_CONFIG__",
+    "sessionApiPath": "/api/v1/plugins/onlyoffice/session",
+    "saveTransport": "webdav+drive",
+    "editorPaths": ["editor", "editor.html"]
   }
 }

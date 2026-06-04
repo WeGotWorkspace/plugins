@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored ONLYOFFICE SDK + web-apps (multi‑MB minified JS; not first-party source).
+    "public/**",
   ]),
 ]);
 

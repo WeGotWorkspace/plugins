@@ -9,7 +9,7 @@
     "build:slim": "pnpm build && node utils/build-slim.mjs",
     "preview": "php -S localhost:8080 -t out preview-router.php",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint app lib next.config.ts",
     "svgr": "npx @svgr/cli --out-dir components/svg --typescript -- public/svg",
     "pages:dev": "npx wrangler pages dev ./out",
     "deploy": "pnpm build && npx wrangler pages deploy ./out --project-name=office-website",

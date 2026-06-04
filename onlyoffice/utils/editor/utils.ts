@@ -51,12 +51,12 @@ const ONLYOFFICE_BUNDLE = "/v9.3.0.24-1";
 
 /**
  * Path to the ONLYOFFICE web-apps bundle.
- * Resolved at call time so injected {@code __SABRE_OFFICE_CONFIG__.office_path} can win.
+ * Resolved at call time so injected {@code __WGW_PLUGIN_CONFIG__.plugin_route} can win.
  */
 export function getAppRoot(): string {
   if (typeof window !== "undefined") {
-    const w = window as unknown as { __SABRE_OFFICE_CONFIG__?: { office_path?: string } };
-    const p = w.__SABRE_OFFICE_CONFIG__?.office_path;
+    const w = window as unknown as { __WGW_PLUGIN_CONFIG__?: { plugin_route?: string } };
+    const p = w.__WGW_PLUGIN_CONFIG__?.plugin_route;
     if (typeof p === "string" && p.length > 0) {
       const norm = p.replace(/\/+$/, "");
       return `${norm}${ONLYOFFICE_BUNDLE}`;
@@ -75,8 +75,8 @@ export function getX2tBaseUrl(): string {
     return "";
   }
   const prefix = (() => {
-    const w = window as unknown as { __SABRE_OFFICE_CONFIG__?: { office_path?: string } };
-    const p = w.__SABRE_OFFICE_CONFIG__?.office_path;
+    const w = window as unknown as { __WGW_PLUGIN_CONFIG__?: { plugin_route?: string } };
+    const p = w.__WGW_PLUGIN_CONFIG__?.plugin_route;
     if (typeof p === "string" && p.length > 0) {
       return p.replace(/\/+$/, "");
     }

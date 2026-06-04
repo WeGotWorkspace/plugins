@@ -14,7 +14,7 @@ import {
   readSabreOfficeConfig,
   webdavPutOfficeFile,
 } from "@/lib/sabre-office-dav";
-import { saveOfficeDocumentViaApi } from "@/lib/sabre-office-save";
+import { savePluginDocumentViaDrive } from "@/lib/sabre-office-save";
 
 function mergeBuffers(buffers: Uint8Array[]) {
   const totalLength = buffers.reduce((acc, buffer) => acc + buffer.length, 0);
@@ -521,9 +521,9 @@ export class EditorServer {
               `users/${cfg.username.replace(/[/\\]+/g, "_")}/${filenameForWebDavSave(cmdTitle, this.title, this.fileType)}`,
             );
           const bytes = new Uint8Array(output);
-          const saveTransport = cfg.save_transport ?? "webdav+api";
+          const saveTransport = cfg.saveTransport ?? "webdav+drive";
 
-          if (saveTransport !== "api") {
+          if (saveTransport !== "drive") {
             try {
               await webdavPutOfficeFile(
                 cfg.base_uri,
@@ -543,19 +543,19 @@ export class EditorServer {
             }
           }
 
-          if (saveTransport === "api" || saveTransport === "webdav+api") {
+          if (saveTransport === "drive" || saveTransport === "webdav+drive") {
             try {
-              await saveOfficeDocumentViaApi(
+              await savePluginDocumentViaDrive(
                 putPathname,
                 bytes,
-                cfg.save_api_path || "/api/v1/office/documents",
+                cmdTitle || this.title,
               );
               if (!this.webdavResourcePath) {
                 this.webdavResourcePath = putPathname;
               }
               return { status: "ok", dataUrl };
-            } catch (apiErr) {
-              console.warn("API save failed", apiErr);
+            } catch (driveErr) {
+              console.warn("Drive save failed", driveErr);
             }
           }
         }
